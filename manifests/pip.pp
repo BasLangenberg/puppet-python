@@ -80,6 +80,7 @@ define python::pip (
   $uninstall_args  = '',
   $timeout         = 1800,
   $log_dir         = '/tmp',
+  $pip_module      = false,
   $path            = ['/usr/local/bin','/usr/bin','/bin', '/usr/sbin'],
 ) {
 
@@ -118,6 +119,10 @@ define python::pip (
   $pip_env = $virtualenv ? {
     'system' => "${exec_prefix}pip",
     default  => "${virtualenv}/bin/pip",
+  }
+
+  if $pip_module = true {
+    $pip_env = "python -m pip"
   }
 
   $pypi_index = $index ? {
